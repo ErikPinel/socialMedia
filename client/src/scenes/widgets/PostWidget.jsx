@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import AddComment from "./AddComment";
+import Comment from "../../components/Comment"
 
 const PostWidget = ({
   postId,
@@ -99,9 +100,11 @@ const PostWidget = ({
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment.message?comment.message:comment}
-              </Typography>
+              { comment.message?  <Comment picturePath={comment.picturePath} commentText={comment.message} occupation={comment.occupation} 
+              firstName={comment.firstName}  lastName={comment.lastName} />
+              :<Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                {comment}
+              </Typography>}
             </Box>
           ))}
           <Divider />

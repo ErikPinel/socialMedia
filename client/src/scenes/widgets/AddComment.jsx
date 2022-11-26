@@ -64,7 +64,21 @@ import {
 
 
     const handleAddComment = async () => {
-        const comment={message:commentText, userId:userId }
+        const dataResponse = await fetch(`http://localhost:3001/users/${userId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const commenterResponse = await dataResponse.json();
+  
+
+          console.log(commenterResponse.picturePath+"**************!!!!!!")
+
+        const comment={message:commentText
+            ,picturePath:commenterResponse.picturePath
+            , occupation: commenterResponse.occupation,
+        firstName:commenterResponse.firstName,
+        lastName:commenterResponse.lastName}
+
         const response = await fetch(`http://localhost:3001/posts/${postId}/comment`, {
           method: "PATCH",
           headers: {

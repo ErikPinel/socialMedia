@@ -11,6 +11,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
+import AddComment from "./AddComment";
 
 const PostWidget = ({
   postId,
@@ -94,11 +95,12 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
+          <AddComment postId={postId} userId={loggedInUserId} />
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
+                {comment.message?comment.message:comment}
               </Typography>
             </Box>
           ))}

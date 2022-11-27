@@ -23,7 +23,7 @@ import {
     FavoriteOutlined,
     ShareOutlined,
   } from "@mui/icons-material";
-
+  import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
   import FlexBetween from "components/FlexBetween";
   import Dropzone from "react-dropzone";
   import UserImage from "components/UserImage";
@@ -56,6 +56,7 @@ const Comment = ({ picturePath,
 
 
       const patchCommentUpVote = async () => {
+        console.log("like!")
         const response = await fetch(`http://localhost:3001/posts/${postId}/commentUpVote`, {
           method: "PATCH",
           headers: {
@@ -102,27 +103,27 @@ const Comment = ({ picturePath,
       }}>{` works at - ${occupation}`}
       </Box>
         <Divider />
-      <Box  mt="0.7rem"  mb="0.7rem" sx={{
+      <Box  mt="0.7rem"  mb="0.7rem" sx={{ width:"70%"
        
       }}>{commentText}
       </Box>
      
         </Box>
-
+        </Box>
 
        {type==="question"?<FlexBetween gap="1rem"><FlexBetween gap="0.3rem">
             <IconButton onClick={patchCommentUpVote}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <ArrowCircleUpIcon sx={{ color: "rgb(137 226 25)" }} />
               ) : (
-                <FavoriteBorderOutlined />
+                <ArrowCircleUpIcon />
               )}
             </IconButton>
             <Typography>{likeCount}</Typography>
           </FlexBetween> </FlexBetween> : undefined}
 
 
-      </Box>
+      
       </WidgetWrapper>
     );
   };

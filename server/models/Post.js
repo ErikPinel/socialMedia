@@ -16,6 +16,7 @@ const postSchema = mongoose.Schema(
     },
     location: String,
     description: String,
+    code:String,
     picturePath: String,
     userPicturePath: String,
     likes: {
@@ -25,7 +26,10 @@ const postSchema = mongoose.Schema(
     comments: 
       [{comment:Object,likes:Array}]//[{??likes:[{userId:String}??],comment}]
     ,
-    type:String //question/regular 
+    type:String, //question/regular 
+
+
+
 
   },
   { timestamps: true }

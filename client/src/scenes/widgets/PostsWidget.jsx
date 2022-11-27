@@ -52,6 +52,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           likes,
           comments,
           type,
+          code,
         }) => (
           <PostWidget
             key={_id}
@@ -65,6 +66,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             likes={likes}
             comments={comments}
             type={type}
+            code={code}
           />
         )
       )}

@@ -16,26 +16,36 @@ import {
   Button,
   IconButton,
   useMediaQuery,
+  TextareaAutosize,
 } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import FlexBetween from "components/FlexBetween";
 import Dropzone from "react-dropzone";
 import UserImage from "components/UserImage";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 
+
+import "./overflow.css"
+import Prism from "prismjs"
+import "../../prism.css"
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
+  const [isAddCode,setIsAddCode]=useState(false)
   const[istypeRegular,setIsTypeRegular]=useState(true)
+  const[code,setCode]=useState("")
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -45,6 +55,7 @@ const MyPostWidget = ({ picturePath }) => {
     const formData = new FormData();
     formData.append("userId", _id);
     formData.append("description", post);
+    formData.append("code",code);
     formData.append("type", type);
     if (image) {
       formData.append("picture", image);
@@ -62,12 +73,22 @@ const MyPostWidget = ({ picturePath }) => {
     setPost("");
   };
 
+
+
+     
+useEffect(() => {
+  Prism.highlightAll();
+}, [code]);
+
+
   return (
     <WidgetWrapper>
+     
+
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath}  />
         <InputBase
-          placeholder="What's on your mind..."
+          placeholder={istypeRegular?"What's on your mind...":"ask tech queastion..."}
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{
@@ -122,6 +143,70 @@ const MyPostWidget = ({ picturePath }) => {
           </Dropzone>
         </Box>
       )}
+
+
+
+
+{
+isAddCode&&!istypeRegular
+  ?
+  (<textarea
+    className="overflow"
+    aria-label="minimum height"
+    rows={40}
+    cols={80}
+    value={code}
+    placeholder="copy your code"
+    onChange={e=>setCode(e.target.value)}
+  />
+  
+  
+  )
+  : 
+  ("")
+
+
+}
+
+
+
+
+       {
+isAddCode&&!istypeRegular
+  ?
+  (<pre className="language-javascript pre-insertion">
+  <code dir="rtl">{code}</code>
+</pre>
+  
+  
+  )
+  : 
+  ("")
+
+
+}
+
+
+
+
+
+
+{   <FlexBetween className="sss" sx={{justifyContent:"end", m:"15px 20px"}}>
+   <FlexBetween justifyContent="end" gap="0.25rem" onClick={()=>setIsAddCode(!isAddCode)}>
+            {   istypeRegular
+            ? 
+             ""
+            :  
+           (isAddCode?
+            <RemoveIcon sx={{  fontSize:"1.5rem",color: mediumMain, "&:hover": { cursor: "pointer", color: "rgb(229 9 20)" } }} />
+            :
+            <AddIcon sx={{ fontSize:"1.5rem", color: mediumMain, "&:hover": { cursor: "pointer" ,color: "rgb(137 226 25)"} }} />)
+            }
+             
+            </FlexBetween>  </FlexBetween>}
+
+
+
 
       <Divider sx={{ margin: "1.25rem 0" }} />
 
@@ -178,6 +263,7 @@ const MyPostWidget = ({ picturePath }) => {
           POST
         </Button>
       </FlexBetween>
+   
     </WidgetWrapper>
   );
 };

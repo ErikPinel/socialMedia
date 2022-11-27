@@ -8,11 +8,13 @@ import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import AddComment from "./AddComment";
 import Comment from "../../components/Comment"
+import Prism from "prismjs"
+import "../../prism.css"
 
 const PostWidget = ({
   postId,
@@ -25,6 +27,7 @@ const PostWidget = ({
   likes,
   comments,
   type,
+  code,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -50,6 +53,12 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  useEffect(() => {
+    Prism.highlightAll();
+  }, [code]);
+
+
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -58,9 +67,21 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
+     
+
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
+      {code?<pre className="language-javascript pre-insertion">
+  <code dir="rtl">{code}</code>
+  </pre>:undefined}
+      <Divider />
+
+
+
+
+
+
       {picturePath && (
         <img
           width="100%"

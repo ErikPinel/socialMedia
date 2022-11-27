@@ -17,6 +17,8 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import FlexBetween from "components/FlexBetween";
 import Dropzone from "react-dropzone";
 import UserImage from "components/UserImage";
@@ -30,6 +32,7 @@ const MyPostWidget = ({ picturePath }) => {
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
+  const[istypeRegular,setIsTypeRegular]=useState(true)
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
@@ -38,9 +41,11 @@ const MyPostWidget = ({ picturePath }) => {
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {
+    const type=istypeRegular?"regular":"question"
     const formData = new FormData();
     formData.append("userId", _id);
     formData.append("description", post);
+    formData.append("type", type);
     if (image) {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
@@ -130,13 +135,20 @@ const MyPostWidget = ({ picturePath }) => {
             Image
           </Typography>
         </FlexBetween>
+    <FlexBetween gap="0.25rem" onClick={()=>setIsTypeRegular(!istypeRegular)}>
+            {   istypeRegular
+            ? 
+             <ForwardToInboxIcon sx={{ color: mediumMain, "&:hover": { cursor: "pointer" } }} />
+            :  
+            <LiveHelpIcon sx={{ color: mediumMain, "&:hover": { cursor: "pointer" } }} />
+            }
+              <Typography color={mediumMain}>{istypeRegular?"regular":"question"}</Typography>
+            </FlexBetween>
+
 
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
-            </FlexBetween>
+           
 
             <FlexBetween gap="0.25rem">
               <AttachFileOutlined sx={{ color: mediumMain }} />

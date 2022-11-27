@@ -85,10 +85,11 @@ import {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ comment:comment }),
+          body: JSON.stringify({ comment:comment,likes:[] }),
         });
         const updatedPost = await response.json();
         dispatch(setPost({ post: updatedPost }));
+        console.log("work1")
       };
   
     return (

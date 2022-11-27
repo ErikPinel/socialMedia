@@ -1,10 +1,11 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import { patchCommentByPopularity } from "../middleware/commentInsertion.js";
 
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
+    const { userId, description, picturePath , type } = req.body;
     const user = await User.findById(userId);
     const newPost = new Post({
       userId,
@@ -16,6 +17,7 @@ export const createPost = async (req, res) => {
       picturePath,
       likes: {},
       comments: [],
+      type,
     });
     await newPost.save();
 
@@ -25,6 +27,32 @@ export const createPost = async (req, res) => {
     res.status(409).json({ message: err.message });
   }
 };
+
+
+
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { comment} = req.body;
+    const { likes } = req.body;
+    console.log(comment.message+"************")
+    const post = await Post.findById(id);
+    post.comments.push({comment, likes})
+   
+
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { comments: post.comments },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 
 /* READ */
 export const getFeedPosts = async (req, res) => {
@@ -74,15 +102,37 @@ export const likePost = async (req, res) => {
 
 
 
-export const addComment = async (req, res) => {
+
+export const UpVoteComment = async (req, res) => {
   try {
     const { id } = req.params;
-    const { comment} = req.body;
-    console.log(comment.message+"************")
+    console.log(id+"-----------")
+    const { userId } = req.body;
+    const { comment } = req.body;
+    console.log("donkey1")
+    comment.likes?undefined:comment.likes=[];
+    console.log("donkey2")
     const post = await Post.findById(id);
-    post.comments.push(comment)
-   
+    const isLiked = comment.likes.some((e)=>e.userId===userId);
+    console.log("donkey3")
 
+    if (isLiked) {
+      console.log("donkey31")
+      const likeIndex=comment.likes.findIndex((e)=>e.userId===userId);
+      console.log("donkey32")
+      comment.likes.splice(likeIndex,1);
+      console.log("donkey33")
+    } else {
+      console.log("donkey34")
+      comment.likes.push({userId:userId});
+    }
+    console.log("donkey4"+comment._id)
+    const commentIndex=post.comments.findIndex((e)=>e._id==comment._id);
+    console.log("commentIndex"+commentIndex)
+    post.comments[commentIndex]=comment;
+    post.comments=patchCommentByPopularity(post.comments,commentIndex);
+
+    console.log("donkey5")
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
@@ -95,3 +145,6 @@ export const addComment = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+
+

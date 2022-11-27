@@ -24,6 +24,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  type,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -99,11 +100,13 @@ const PostWidget = ({
           <AddComment postId={postId} userId={loggedInUserId} />
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
+              {console.log(i+"ssstrapezzzz")}
               <Divider />
-              { comment.message?  <Comment picturePath={comment.picturePath} commentText={comment.message} occupation={comment.occupation} 
-              firstName={comment.firstName}  lastName={comment.lastName} />
+              { comment.comment.message?  <Comment picturePath={comment.comment.picturePath} commentText={comment.comment.message} occupation={comment.comment.occupation} 
+              firstName={comment.comment.firstName}  lastName={comment.comment.lastName} postId={postId} 
+              loggedInUserId={loggedInUserId}  currentComment={comment} type={type}/>
               :<Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
+                {"comment"}
               </Typography>}
             </Box>
           ))}

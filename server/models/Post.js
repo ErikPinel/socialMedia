@@ -22,10 +22,11 @@ const postSchema = mongoose.Schema(
       type: Map,
       of: Boolean,
     },
-    comments: {
-      type: Array,
-      default: [],
-    },
+    comments: 
+      [{comment:Object,likes:Array}]//[{??likes:[{userId:String}??],comment}]
+    ,
+    type:String //question/regular 
+
   },
   { timestamps: true }
 );

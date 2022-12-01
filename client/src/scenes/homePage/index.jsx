@@ -1,19 +1,30 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
 import UserWidget from "scenes/widgets/UserWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import AppChat from "Chat/AppChat";
+import Chat from "Chat/Chat";
+import { setFriends } from "state";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
+ const dispatch= useDispatch()
+  let friend = useSelector((state) => state.currentFriendChat);
 
   return (
     <Box>
+      
       <Navbar />
+      <Box sx={{position:"fixed",margin:"15px" ,top:"25%"}}>
+      {
+        friend?<Chat ></Chat>:""
+      }
+      </Box>
       <Box
         width="100%"
         padding="2rem 6%"
@@ -38,7 +49,9 @@ const HomePage = () => {
             <FriendListWidget userId={_id} />
           </Box>
         )}
+         
       </Box>
+     
     </Box>
   );
 };

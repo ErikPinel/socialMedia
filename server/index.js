@@ -18,7 +18,9 @@ import User from "./models/User.js";
 import Post from "./models/Post.js";
 import { users, posts } from "./data/index.js";
 
+
 /* CONFIGURATIONS */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -31,6 +33,46 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+
+//socket
+import http from "http"
+import { Server } from "socket.io";
+const server = http.createServer(app);
+
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",///Change origin on deploy!!! dont forget cuz i will for sure :(
+    methods: ["GET", "POST"],
+  },
+});
+//
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
+
+  socket.on("send_message", (data) => {
+    console.log("77777--- "+ data.room)
+    socket.to(data.room).emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
+
+server.listen(3001, () => {
+  console.log("SERVER RUNNING");
+});
+
+
+
+
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
@@ -60,7 +102,8 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  
+    
 
     /* ADD DATA ONE TIME */
     // User.insertMany(users);

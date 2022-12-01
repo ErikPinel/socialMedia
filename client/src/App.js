@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-
+// import AppChat from "Chat/AppChat";// prob delete later
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -19,6 +19,11 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
+          {/* <Route
+              path="/chat"
+              element={<AppChat/>}
+            /> */}
+
             <Route path="/" element={<LoginPage />} />
             <Route
               path="/home"
@@ -28,6 +33,7 @@ function App() {
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
+         
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

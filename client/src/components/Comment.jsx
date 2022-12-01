@@ -24,6 +24,8 @@ import {
     ShareOutlined,
   } from "@mui/icons-material";
   import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+  import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+  import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
   import FlexBetween from "components/FlexBetween";
   import Dropzone from "react-dropzone";
   import UserImage from "components/UserImage";
@@ -45,7 +47,6 @@ const Comment = ({ picturePath,
     const medium = palette.neutral.medium;
     const token = useSelector((state) => state.token);
     const isLiked=currentComment.likes?.some(l=>l.userId==loggedInUserId)
-    console.log("like"+isLiked)
     const likeCount = currentComment.likes?.length;
 
   
@@ -56,7 +57,6 @@ const Comment = ({ picturePath,
 
 
       const patchCommentUpVote = async () => {
-        console.log("like!")
         const response = await fetch(`http://localhost:3001/posts/${postId}/commentUpVote`, {
           method: "PATCH",
           headers: {
@@ -114,9 +114,10 @@ const Comment = ({ picturePath,
        {type==="question"?<FlexBetween gap="1rem"><FlexBetween gap="0.3rem">
             <IconButton onClick={patchCommentUpVote}>
               {isLiked ? (
-                <ArrowCircleUpIcon sx={{ color: "rgb(137 226 25)" }} />
+                <ArrowUpwardIcon sx={{ color: "rgb(137 226 25)" }} />
               ) : (
-                <ArrowCircleUpIcon />
+                <ArrowUpwardIcon />
+                  
               )}
             </IconButton>
             <Typography>{likeCount}</Typography>

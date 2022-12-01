@@ -39,9 +39,16 @@ pre[class*="language-"] {
 	margin: .5em 0;
 	overflow: scroll;
 	background: #1e1e1e;
-	max-width: 40vw;
+	
 	max-height: 70vh;
 }
+
+
+@media only screen and (min-width: 1000px) {
+	pre[class*="language-"] {
+		max-width: 40vw;
+	}
+  }
 
 
 :not(pre) > code[class*="language-"] {

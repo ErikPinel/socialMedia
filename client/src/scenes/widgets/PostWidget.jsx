@@ -4,6 +4,8 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
@@ -15,6 +17,8 @@ import AddComment from "./AddComment";
 import Comment from "../../components/Comment"
 import Prism from "prismjs"
 import "../../prism.css"
+
+
 
 const PostWidget = ({
   postId,
@@ -35,11 +39,11 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-
+  const [isCopied, setIsCopied] = useState(false);
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
-
+  const codeSpace= "\n"+ code
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
       method: "PATCH",
@@ -60,7 +64,7 @@ const PostWidget = ({
 
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="2rem 2rem" >
       <Friend
         friendId={postUserId}
         name={name}
@@ -72,9 +76,37 @@ const PostWidget = ({
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
-      {code?<pre className="language-javascript pre-insertion">
-  <code dir="rtl">{code}</code>
-  </pre>:undefined}
+
+  { code?   <Box sx={{display:"flex",justifyContent:"end",marginRight:"4vw", transform:"translateY(50px)"}} >
+              
+              {isCopied ? (
+                <AssignmentTurnedInIcon sx={{color:"white"}}/>
+              ) : (
+                <ContentCopyIcon sx={{color:"white"}} className="clipIcon"   onClick={() => {
+                  navigator.clipboard.writeText(code);
+                  setIsCopied(true);
+                  setTimeout(()=>{setIsCopied(false);},1000)
+                }}  />
+              )}
+            </Box> :""}
+
+      {code?
+          <pre
+           style={{"marginBottom":"75px"}}
+            onClick={() => {
+              navigator.clipboard.writeText(code);
+              setIsCopied(true);
+              setTimeout(()=>{setIsCopied(false);},1000)
+            }}
+            className="language-javascript pre-insertion"
+          >
+           
+
+            <code dir="rtl">{codeSpace}</code>
+          </pre>:undefined}
+
+
+
       <Divider />
 
 
@@ -121,7 +153,6 @@ const PostWidget = ({
           <AddComment postId={postId} userId={loggedInUserId} />
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
-              {console.log(i+"ssstrapezzzz")}
               <Divider />
               { comment.comment.message?  <Comment picturePath={comment.comment.picturePath} commentText={comment.comment.message} occupation={comment.comment.occupation} 
               firstName={comment.comment.firstName}  lastName={comment.comment.lastName} postId={postId} 

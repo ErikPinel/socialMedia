@@ -51,6 +51,7 @@ const MyPostWidget = ({ picturePath }) => {
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {
+    
     const type=istypeRegular?"regular":"question"
     const formData = new FormData();
     formData.append("userId", _id);
@@ -71,6 +72,9 @@ const MyPostWidget = ({ picturePath }) => {
     dispatch(setPosts({ posts }));
     setImage(null);
     setPost("");
+    setCode("")
+    setIsAddCode(false)
+
   };
 
 
@@ -82,7 +86,7 @@ useEffect(() => {
 
 
   return (
-    <WidgetWrapper>
+    <WidgetWrapper sx={{margin:"0 2rem"}}>
      
 
       <FlexBetween gap="1.5rem">
@@ -167,28 +171,6 @@ isAddCode&&!istypeRegular
 
 
 }
-
-
-
-
-       {
-isAddCode&&!istypeRegular
-  ?
-  (<pre className="language-javascript pre-insertion">
-  <code dir="rtl">{code}</code>
-</pre>
-  
-  
-  )
-  : 
-  ("")
-
-
-}
-
-
-
-
 
 
 {   <FlexBetween className="sss" sx={{justifyContent:"end", m:"15px 20px"}}>

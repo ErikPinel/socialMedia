@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  currentFriendChat:null,
 };
 
 export const authSlice = createSlice({
@@ -24,7 +25,9 @@ export const authSlice = createSlice({
     },
     setFriends: (state, action) => {
       if (state.user) {
+       
         state.user.friends = action.payload.friends;
+        
       } else {
         console.error("user friends non-existent :(");
       }
@@ -39,9 +42,13 @@ export const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    setCurrentFriendChat: (state, action) => {
+      console.log("wowState"+action.payload.currentFriendChat)
+      state.currentFriendChat = action.payload.currentFriendChat;
+    }
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
+export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setCurrentFriendChat } =
   authSlice.actions;
 export default authSlice.reducer;

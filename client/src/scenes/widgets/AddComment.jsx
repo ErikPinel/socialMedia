@@ -71,7 +71,6 @@ import {
     const commenterResponse = await dataResponse.json();
   
 
-          console.log(commenterResponse.picturePath+"**************!!!!!!")
 
         const comment={message:commentText
             ,picturePath:commenterResponse.picturePath
@@ -89,7 +88,7 @@ import {
         });
         const updatedPost = await response.json();
         dispatch(setPost({ post: updatedPost }));
-        console.log("work1")
+        setCommentText("")
       };
   
     return (

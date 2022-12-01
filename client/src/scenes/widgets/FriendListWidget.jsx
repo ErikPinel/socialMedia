@@ -1,15 +1,18 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "state";
+import { setCurrentFriendChat, setFriends } from "state";
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
+  const [isFriendsPromise,setIsFriendsPromise]=useState(false)
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  let friends = useSelector((state) => state.user.friends);
+  let user = useSelector((state) => state.user);
+  if(!user.friends.length)friends=[]
 
   const getFriends = async () => {
     const response = await fetch(
@@ -21,9 +24,12 @@ const FriendListWidget = ({ userId }) => {
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
+    friends=data;
+    setIsFriendsPromise(true)
   };
 
   useEffect(() => {
+    friends&&
     getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -37,17 +43,39 @@ const FriendListWidget = ({ userId }) => {
       >
         Friend List
       </Typography>
-      <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
-          <Friend
-            key={friend._id}
-            friendId={friend._id}
+      {isFriendsPromise?<Box display="flex" flexDirection="column" gap="1.5rem">
+        {friends? friends.map((friend,i) => (
+          <Box  key={i}        onClick={() => {
+           
+        // navigate("/chat");
+        // navigate(0);
+      }}>
+
+
+         { friend.friendId? <Friend
+            key={friend.friendId+"list"}
+            friendId={friend.friendId}
             name={`${friend.firstName} ${friend.lastName}`}
             subtitle={friend.occupation}
             userPicturePath={friend.picturePath}
-          />
-        ))}
-      </Box>
+            conversationId={friend.conversationId}
+            friend={friend}
+    
+          />:
+          <Friend
+          key={friend._id+"list"}
+          friendId={friend._id}
+          name={`${friend.firstName} ${friend.lastName}`}
+          subtitle={friend.occupation}
+          userPicturePath={friend.picturePath}
+          conversationId={friend.conversationId}
+          friend={friend}
+  
+        />
+          }
+          </Box>
+        )):""}
+      </Box>:""}
     </WidgetWrapper>
   );
 };

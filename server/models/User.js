@@ -37,7 +37,14 @@ const UserSchema = new mongoose.Schema(
     viewedProfile: Number,
     impressions: Number,
     
+    // UserPostsLikes: {
+    //   type: Map,
+    //   of: Number,
+    //   default:0
+    // }, To do
+  
   },
+  
   { timestamps: true }
 );
 

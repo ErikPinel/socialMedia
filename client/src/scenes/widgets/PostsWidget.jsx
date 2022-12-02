@@ -5,8 +5,9 @@ import PostWidget from "./PostWidget";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
+  let posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
+  if(!posts.length)posts=[]
 
   const getPosts = async () => {
     const response = await fetch("http://localhost:3001/posts", {
@@ -15,6 +16,8 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     });
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
+    console.log("ssssssss")
+     console.log(data.length)
   };
 
   const getUserPosts = async () => {
@@ -27,6 +30,8 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     );
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
+    console.log("ssssssss2")
+    console.log(data.length)
   };
 
   useEffect(() => {

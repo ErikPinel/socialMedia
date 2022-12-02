@@ -3,6 +3,7 @@ import User from "../models/User.js";
 
 import { createConversation } from "../middleware/createConvo.js";
 import Conversation from "../models/Conversation.js";
+import { userSearch } from "../middleware/userSearch.js";
 /* READ */
 
 export const getConversation = async (req, res) => {
@@ -24,6 +25,31 @@ export const getConversation = async (req, res) => {
 }
 
 
+
+
+
+export const searchUserByName = async (req, res) => {
+  try {
+    const { searchValue, userId } = req.params;
+    console.log("sd")
+    console.log(userId)
+ 
+    
+   if(searchValue)
+    {
+      const users = await User.find({});
+     
+     const matchingUsers= userSearch(users,searchValue,userId)
+    res.status(200).json(matchingUsers);
+   }
+    else res.status(404).json("no filter value found");
+
+
+    
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
 
 
 

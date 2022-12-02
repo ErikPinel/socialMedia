@@ -1,6 +1,7 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 import { patchCommentByPopularity } from "../middleware/commentInsertion.js";
+// import { filterForYouPosts } from "../middleware/filterForYouPosts.js";
 
 /* CREATE */
 export const createPost = async (req, res) => {
@@ -69,6 +70,30 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
+
+
+// export const getForYouPosts = async (req, res) => { To do
+//   const {userId}=req.params;
+//   try {
+//     const posts = await Post.find();
+//     const user = await User.findOne({_id:userId});
+//     filterForYouPosts(posts,user)
+//     res.status(200).json(posts);
+//   } catch (err) {
+//     res.status(404).json({ message: err.message });
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
+
 /* UPDATE */
 export const likePost = async (req, res) => {
   try {
@@ -94,6 +119,11 @@ export const likePost = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+
+
+
+
 
 export const UpVoteComment = async (req, res) => {
   try {

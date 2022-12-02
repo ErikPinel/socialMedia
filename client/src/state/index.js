@@ -6,6 +6,7 @@ const initialState = {
   token: null,
   posts: [],
   currentFriendChat:null,
+  
 };
 
 export const authSlice = createSlice({

@@ -9,17 +9,19 @@ import FriendListWidget from "scenes/widgets/FriendListWidget";
 import AppChat from "Chat/AppChat";
 import Chat from "Chat/Chat";
 import { setFriends } from "state";
+import { useState } from "react";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  const [isTouchHome, setIsTouchHome] = useState(false);
   const { _id, picturePath } = useSelector((state) => state.user);
- const dispatch= useDispatch()
+
   let friend = useSelector((state) => state.currentFriendChat);
 
   return (
-    <Box>
+    <Box >
       
-      <Navbar />
+      <Navbar isTouchHome={isTouchHome} setIsTouchHome={setIsTouchHome}  />
       <Box sx={{position:"fixed",margin:"15px" ,top:"25%"}}>
       {
         friend?<Chat ></Chat>:""
@@ -31,6 +33,7 @@ const HomePage = () => {
         display={isNonMobileScreens ? "flex" : "block"}
         gap="0.5rem"
         justifyContent="space-between"
+        onClick={()=>setIsTouchHome(true)}
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />

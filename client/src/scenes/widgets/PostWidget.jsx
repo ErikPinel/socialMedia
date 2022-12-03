@@ -92,6 +92,7 @@ const PostWidget = ({
 
       {code?
           <pre
+          
            style={{"marginBottom":"75px"}}
             onClick={() => {
               navigator.clipboard.writeText(code);

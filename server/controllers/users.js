@@ -170,3 +170,65 @@ export const patchConversation = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 }
+
+
+
+export const patchTwitter = async (req, res) => {
+  try {
+    console.log("!!!1")
+    const { userId } = req.params;
+    const {twitterValue} = req.body;
+console.log("2")
+    const user = await User.findOne({_id:userId});
+
+
+   if(user&&twitterValue)
+    {
+      console.log("3")
+      user.twitter=twitterValue;
+      console.log("4")
+      await user.save()
+      console.log(user.twitter)
+    res.status(200).json(user.twitter);
+   }
+    else res.status(404).json("users twitter could not be updated");
+
+
+    
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
+
+
+
+export const patchLinkedin = async (req, res) => {
+  try {
+    console.log("!!!1")
+    const { userId } = req.params;
+    const {linkedinValue} = req.body;
+console.log("2")
+    const user = await User.findOne({_id:userId});
+
+
+   if(user&&linkedinValue)
+    {
+      console.log("3")
+      user.linkedin=linkedinValue;
+      console.log("4")
+      await user.save()
+      console.log(user.linkedin)
+    res.status(200).json(user.linkedin);
+   }
+    else res.status(404).json("users linkedin could not be updated");
+
+
+    
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
+
+

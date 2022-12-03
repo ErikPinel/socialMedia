@@ -92,7 +92,8 @@ useEffect(() => {
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath}  />
         <InputBase
-          placeholder={istypeRegular?"What's on your mind...":"ask tech queastion..."}
+         
+          placeholder={istypeRegular?"What's on your mind...":"ask a tech question..."}
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{

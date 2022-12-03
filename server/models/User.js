@@ -36,6 +36,8 @@ const UserSchema = new mongoose.Schema(
     occupation: String,
     viewedProfile: Number,
     impressions: Number,
+    twitter:String,
+    linkedin:String,
     
     // UserPostsLikes: {
     //   type: Map,

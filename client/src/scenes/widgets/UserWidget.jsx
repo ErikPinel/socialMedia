@@ -4,31 +4,91 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, Typography, Divider, useTheme, InputBase, TextField } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setLinkedin, setTwitter } from "state";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
+  const [isTwitter, setIsTwitter] = useState(false);
+  const [isLinkedin, setIsLinkedin] = useState(false);
+  const [twitterValue, setTwitterValue] = useState();
+  const [linkedinValue, setLinkedinValue] = useState();
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
+  const dispatch = useDispatch();
+  const { _id } = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`, {
+    const response = await fetch(`http://localhost:3001/users/${_id}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
     setUser(data);
   };
+
+
+
+  const patchTwitter = async () => {
+    const response = await fetch(
+      `http://localhost:3001/users/twitter/${_id}/patch`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+      body: JSON.stringify({twitterValue:twitterValue})
+      },
+     
+    );
+    const data = await response.json();
+   
+    dispatch(setTwitter({twitterValue:twitterValue}));
+    user.twitter=data;
+  };
+
+
+
+
+  const patchLinkedin = async () => {
+    const response = await fetch(
+      `http://localhost:3001/users/linkedin/${_id}/patch`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+      body: JSON.stringify({linkedinValue:linkedinValue})
+      },
+     
+    );
+    const data = await response.json();
+   
+    dispatch(setLinkedin({linkedinValue:linkedinValue}));
+    user.linkedin=data;
+  };
+
+
+
+
+  
 
   useEffect(() => {
     getUser();
@@ -120,15 +180,30 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
+            <img src="../assets/twitter.png" alt="twitter"  onClick/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
               </Typography>
-              <Typography color={medium}>Social Network</Typography>
+             {isTwitter? 
+               <TextField id="standard-basic" label={currentUser.twitter&&currentUser.twitter} variant="standard" 
+               onChange={e=>setTwitterValue(e.target.value)}
+               />
+             :
+             <Typography color={medium}>{currentUser.twitter&&currentUser.twitter}</Typography>
+           
+            }
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+         {isTwitter&&_id==userId?
+         (
+          <FlexBetween>
+          <Box onClick={()=>{ patchTwitter();  setIsTwitter(false)}}>  <CheckIcon/></Box>
+          <Box onClick={()=>{setIsTwitter(false)}}>  <CloseIcon/></Box>
+          </FlexBetween>
+         )
+         :
+         <Box onClick={()=>setIsTwitter(true)}>  <EditOutlined sx={{ color: main }}  /></Box>}
         </FlexBetween>
 
         <FlexBetween gap="1rem">
@@ -138,10 +213,25 @@ const UserWidget = ({ userId, picturePath }) => {
               <Typography color={main} fontWeight="500">
                 Linkedin
               </Typography>
-              <Typography color={medium}>Network Platform</Typography>
+            
+             {isLinkedin? 
+               <TextField id="standard-basic" label={user.linkedin&&user.linkedin} variant="standard"
+               onChange={e=>setLinkedinValue(e.target.value)}
+               />
+             :
+             <Typography color={medium}>{user.linkedin&&user.linkedin}</Typography>
+              }
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          {isLinkedin&&_id==userId?
+         (
+          <FlexBetween>
+          <Box onClick={()=>{ patchLinkedin();  setIsLinkedin(false)}}>  <CheckIcon/></Box>
+          <Box onClick={()=>{setIsLinkedin(false)}}>  <CloseIcon/></Box>
+          </FlexBetween>
+         )
+         :
+         <Box onClick={()=>setIsLinkedin(true)}>  <EditOutlined sx={{ color: main }}  /></Box>}
         </FlexBetween>
       </Box>
     </WidgetWrapper>

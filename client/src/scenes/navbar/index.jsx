@@ -65,10 +65,11 @@ const Navbar = ({isTouchHome,setIsTouchHome}) => {
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}  onClick={()=>setIsTouchHome(false)}>
       <FlexBetween gap="1.75rem">
+     
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
-          color="primary"
+          color="#6f42c1"
           onClick={() => navigate("/home")}
           sx={{
             "&:hover": {
@@ -79,14 +80,16 @@ const Navbar = ({isTouchHome,setIsTouchHome}) => {
         >
           EmployErik.com
         </Typography>
-        {isNonMobileScreens && (
-          <Box><FlexBetween
+        <Box flexDiraction="column">
+         <FlexBetween
             backgroundColor={neutralLight}
             borderRadius="9px"
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." 
+             
+             
+            <InputBase placeholder="find friends..." 
             value={filterValue}
              onChange={(e)=>{
               setFilterValue(e.target.value);
@@ -97,14 +100,15 @@ const Navbar = ({isTouchHome,setIsTouchHome}) => {
                   else setFilteredList([])
               
             }}/>
+            
             <IconButton>
               <Search  />
             </IconButton>
            
           </FlexBetween>
-
+         
           { !isTouchHome ?   <Box sx={{backgroundColor:background,width:"290px ", position:"absolute", zIndex:"99"}}>{
-          filteredList.map((user)=>(
+             filteredList.map((user)=>(
            <Box m="5px"> <Friend
             friendId={user._id}
             name={user.firstName+" "+user.lastName }
@@ -113,17 +117,13 @@ const Navbar = ({isTouchHome,setIsTouchHome}) => {
           />
           <Divider color m="5px"/>
           </Box>
+          
           )) 
              }
              </Box>: ""}
-          </Box>
-
-
-
-        )}
-        
+             </Box>
       </FlexBetween>
-
+     
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">

@@ -43,7 +43,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",///Change origin on deploy!!! dont forget cuz i will for sure :(
+    origin: "http://localhost:3000",///Change origin on deploy [@_@, #_#, $_$, %_%]
     methods: ["GET", "POST"],
   },
 });

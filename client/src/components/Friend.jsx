@@ -61,8 +61,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath,conversationId ,frie
         <Box
               onClick={() => {
                 dispatch(setCurrentFriendChat({ currentFriendChat:friend }));
-                // navigate(`/profile/${friendId}`);
-                // navigate(0);
+              
               }}
              
         >
@@ -70,7 +69,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath,conversationId ,frie
       </Box>
       
         <Box
-    
+         onClick={ ()=>{ navigate(`/profile/${friendId}`);
+         navigate(0);}}
         >
           <Typography
             color={main}
@@ -82,6 +82,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath,conversationId ,frie
                 cursor: "pointer",
               },
             }}
+          
           >
             {name}
           </Typography>

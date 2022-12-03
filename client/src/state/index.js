@@ -46,10 +46,18 @@ export const authSlice = createSlice({
     setCurrentFriendChat: (state, action) => {
       console.log("wowState"+action.payload.currentFriendChat)
       state.currentFriendChat = action.payload.currentFriendChat;
-    }
+    },
+    setTwitter: (state, action) => {
+      console.log("tititititititi"+action.payload.twitterValue)
+      state.user.twitter = action.payload.twitterValue;
+    },
+
+    setLinkedin: (state, action) => {
+      state.user.linkedin = action.payload.linkedinValue;
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setCurrentFriendChat } =
+export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setCurrentFriendChat,setLinkedin, setTwitter} =
   authSlice.actions;
 export default authSlice.reducer;
